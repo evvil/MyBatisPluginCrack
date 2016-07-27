@@ -1,0 +1,45 @@
+group 'com.rover12421'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: "eu.appsatori.fatjar"
+
+sourceCompatibility='1.6'
+idea {
+    project {
+        languageLevel = '1.6'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.incremental = true
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
+gradle.taskGraph.whenReady {
+    fatJar {
+        manifest {
+            attributes("Premain-Class": "com.rover12421.crack.mybatis.plugin.Agent")
+            attributes("Main-Class": "com.rover12421.crack.mybatis.plugin.Usage")
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.5'
+}
